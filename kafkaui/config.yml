@@ -4,8 +4,8 @@ auth:
 spring:
   security:
     user:
-      name: ${KAFKA_UI_USERNAME}
-      password: ${KAFKA_UI_PASSWORD}
+      name: admin
+      password: admin
 
 kafka:
   clusters:
