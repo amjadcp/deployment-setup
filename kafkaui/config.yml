@@ -1,0 +1,13 @@
+auth:
+  type: LOGIN_FORM
+
+spring:
+  security:
+    user:
+      name: ${KAFKA_UI_USERNAME}
+      password: ${KAFKA_UI_PASSWORD}
+
+kafka:
+  clusters:
+    - name: kraft-cluster
+      bootstrapServers: kafka:9092

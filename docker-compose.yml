@@ -27,11 +27,10 @@ services:
     image: provectuslabs/kafka-ui:latest
     ports:
       - "8080:8080"
+    volumes:
+      - ./kafkaui/config.yml:/etc/kafkaui/config.yml
     environment:
-      - KAFKA_CLUSTERS_0_NAME=kraft-cluster
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
-      - KAFKA_UI_USERNAME=${KAFKA_UI_USERNAME}
-      - KAFKA_UI_PASSWORD=${KAFKA_UI_PASSWORD} 
+      - SPRING_CONFIG_ADDITIONAL_LOCATION=/etc/kafkaui/config.yml 
     depends_on:
       - kafka
     networks:
