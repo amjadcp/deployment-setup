@@ -1,5 +1,6 @@
 kafka-data/
 zookeeper-data/
+data/
 *.log
 *.pid
 *.tmp
