@@ -3,6 +3,8 @@ version: '3.8'
 networks:
   default:
   metastore:
+    external: true
+    name: metastore_metastore
   
 services:
   minio:
