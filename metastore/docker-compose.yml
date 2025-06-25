@@ -21,7 +21,7 @@ services:
 
   # Hive Metastore Service
   hive-metastore:
-    image: bitnami/hive-metastore:latest
+    image: apache/hive:4.0.1
     container_name: hive-metastore
     depends_on:
       - hive-metastore-db
