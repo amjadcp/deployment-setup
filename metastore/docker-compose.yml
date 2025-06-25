@@ -1,0 +1,50 @@
+version: '3.8'
+
+networks:
+  metastore:
+
+services:
+  # PostgreSQL for Hive Metastore
+  hive-metastore-db:
+    image: postgres:13
+    container_name: hive-metastore-db
+    networks:
+      - metastore:
+    environment:
+      POSTGRES_DB: metastore
+      POSTGRES_USER: ${DB_USER:-hive}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-hive}
+    ports:
+      - "5431:5432"
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+
+  # Hive Metastore Service
+  hive-metastore:
+    image: bitnami/hive-metastore:latest
+    container_name: hive-metastore
+    depends_on:
+      - hive-metastore-db
+    networks:
+      - metastore:
+    environment:
+      HIVE_METASTORE_DATABASE_HOST: hive-metastore-db
+      HIVE_METASTORE_DATABASE_PORT_NUMBER: 5432
+      HIVE_METASTORE_DATABASE_NAME: metastore
+      HIVE_METASTORE_DATABASE_USER: ${DB_USER:-hive}
+      HIVE_METASTORE_DATABASE_PASSWORD: ${DB_PASSWORD:-hive}
+    ports:
+      - "9083:9083"
+
+  # Trino Query Engine
+  trino:
+    image: trinodb/trino:latest
+    container_name: trino
+    depends_on:
+      - hive-metastore
+    networks:
+      - metastore:
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./trino/etc/catalog:/etc/trino/catalog
